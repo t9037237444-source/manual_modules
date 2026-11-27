@@ -1,0 +1,254 @@
+<?php echo $header; ?><?php echo $column_left; ?>
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+        <button type="submit" form="form-module" data-toggle="tooltip" title="<?php echo $button_save; ?>" class="btn btn-primary"><i class="fa fa-save"></i></button>
+        <a href="<?php echo $cancel; ?>" data-toggle="tooltip" title="<?php echo $button_cancel; ?>" class="btn btn-default"><i class="fa fa-reply"></i></a>
+      </div>
+      <h1><?php echo $heading_title; ?></h1>
+      <ul class="breadcrumb">
+        <?php foreach ($breadcrumbs as $breadcrumb) { ?>
+        <li><a href="<?php echo $breadcrumb['href']; ?>"><?php echo $breadcrumb['text']; ?></a></li>
+        <?php } ?>
+      </ul>
+    </div>
+  </div>
+  <div class="container-fluid">
+    <?php if ($error_warning) { ?>
+    <div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> <?php echo $error_warning; ?>
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    <?php } ?>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-pencil"></i> <?php echo $text_edit; ?></h3>
+      </div>
+      <div class="panel-body">
+        <form action="<?php echo $action; ?>" method="post" enctype="multipart/form-data" id="form-module" class="form-horizontal">
+          
+          <ul class="nav nav-tabs">
+            <li class="active"><a href="#tab-general" data-toggle="tab"><i class="fa fa-cog"></i> Настройки</a></li>
+            <li><a href="#tab-categories" data-toggle="tab"><i class="fa fa-list"></i> <?php echo $entry_categories; ?></a></li>
+          </ul>
+
+          <div class="tab-content">
+            <!-- Вкладка: Основные настройки -->
+            <div class="tab-pane active" id="tab-general">
+              
+              <div class="form-group required">
+                <label class="col-sm-3 control-label" for="input-name"><?php echo $entry_name; ?></label>
+                <div class="col-sm-9">
+                  <input type="text" name="name" value="<?php echo $name; ?>" placeholder="<?php echo $entry_name; ?>" id="input-name" class="form-control" />
+                  <?php if ($error_name) { ?>
+                  <div class="text-danger"><?php echo $error_name; ?></div>
+                  <?php } ?>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-sm-3 control-label" for="input-max-depth"><?php echo $entry_max_depth; ?></label>
+                <div class="col-sm-9">
+                  <select name="max_depth" id="input-max-depth" class="form-control">
+                    <option value="0" <?php echo ($max_depth == 0) ? 'selected' : ''; ?>>Все уровни</option>
+                    <option value="1" <?php echo ($max_depth == 1) ? 'selected' : ''; ?>>1 уровень</option>
+                    <option value="2" <?php echo ($max_depth == 2) ? 'selected' : ''; ?>>2 уровня</option>
+                    <option value="3" <?php echo ($max_depth == 3) ? 'selected' : ''; ?>>3 уровня</option>
+                    <option value="4" <?php echo ($max_depth == 4) ? 'selected' : ''; ?>>4 уровня</option>
+                    <option value="5" <?php echo ($max_depth == 5) ? 'selected' : ''; ?>>5 уровней</option>
+                  </select>
+                  <span class="help-block">0 — показывать все уровни вложенности. Укажите число для ограничения глубины дерева.</span>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-sm-3 control-label" for="input-default-state"><?php echo $entry_default_state; ?></label>
+                <div class="col-sm-9">
+                  <select name="default_state" id="input-default-state" class="form-control">
+                    <option value="collapsed" <?php echo ($default_state == 'collapsed') ? 'selected' : ''; ?>>Свёрнуто (первый визит)</option>
+                    <option value="expanded" <?php echo ($default_state == 'expanded') ? 'selected' : ''; ?>>Развёрнуто (первый визит)</option>
+                  </select>
+                  <span class="help-block">Начальное состояние дерева при первом посещении (до сохранения в localStorage).</span>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-sm-3 control-label" for="input-show-count"><?php echo $entry_show_count; ?></label>
+                <div class="col-sm-9">
+                  <select name="show_count" id="input-show-count" class="form-control">
+                    <option value="1" <?php echo ($show_count) ? 'selected' : ''; ?>><?php echo $text_enabled; ?></option>
+                    <option value="0" <?php echo (!$show_count) ? 'selected' : ''; ?>><?php echo $text_disabled; ?></option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-sm-3 control-label" for="input-show-images"><?php echo $entry_show_images; ?></label>
+                <div class="col-sm-9">
+                  <select name="show_images" id="input-show-images" class="form-control">
+                    <option value="1" <?php echo ($show_images) ? 'selected' : ''; ?>><?php echo $text_enabled; ?></option>
+                    <option value="0" <?php echo (!$show_images) ? 'selected' : ''; ?>><?php echo $text_disabled; ?></option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-sm-3 control-label" for="input-highlight-active"><?php echo $entry_highlight_active; ?></label>
+                <div class="col-sm-9">
+                  <select name="highlight_active" id="input-highlight-active" class="form-control">
+                    <option value="1" <?php echo ($highlight_active) ? 'selected' : ''; ?>><?php echo $text_enabled; ?></option>
+                    <option value="0" <?php echo (!$highlight_active) ? 'selected' : ''; ?>><?php echo $text_disabled; ?></option>
+                  </select>
+                  <span class="help-block">Подсвечивать текущую категорию и автоматически раскрывать путь к ней.</span>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-sm-3 control-label" for="input-animation"><?php echo $entry_animation; ?></label>
+                <div class="col-sm-9">
+                  <select name="animation" id="input-animation" class="form-control">
+                    <option value="1" <?php echo ($animation) ? 'selected' : ''; ?>><?php echo $text_enabled; ?></option>
+                    <option value="0" <?php echo (!$animation) ? 'selected' : ''; ?>><?php echo $text_disabled; ?></option>
+                  </select>
+                  <span class="help-block">Плавная анимация при свёртывании/развёртывании веток.</span>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-sm-3 control-label" for="input-sort-order"><?php echo $entry_sort_order; ?></label>
+                <div class="col-sm-9">
+                  <input type="text" name="sort_order" value="<?php echo $sort_order; ?>" placeholder="<?php echo $entry_sort_order; ?>" id="input-sort-order" class="form-control" />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-sm-3 control-label" for="input-status"><?php echo $entry_status; ?></label>
+                <div class="col-sm-9">
+                  <select name="status" id="input-status" class="form-control">
+                    <option value="1" <?php echo ($status) ? 'selected' : ''; ?>><?php echo $text_enabled; ?></option>
+                    <option value="0" <?php echo (!$status) ? 'selected' : ''; ?>><?php echo $text_disabled; ?></option>
+                  </select>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Вкладка: Категории -->
+            <div class="tab-pane" id="tab-categories">
+              <div class="well" style="margin-bottom: 15px;">
+                <div class="row">
+                  <div class="col-sm-6">
+                    <button type="button" class="btn btn-success btn-sm" onclick="selectAllCategories()"><i class="fa fa-check-square-o"></i> <?php echo $text_select_all; ?></button>
+                    <button type="button" class="btn btn-warning btn-sm" onclick="unselectAllCategories()"><i class="fa fa-square-o"></i> <?php echo $text_unselect_all; ?></button>
+                  </div>
+                  <div class="col-sm-6 text-right">
+                    <span class="text-muted">
+                      Включено: <strong id="included-count">0</strong> / <?php echo count($categories); ?>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="alert alert-info"><i class="fa fa-info-circle"></i> Отметьте категории, которые должны отображаться в дереве. Снятые с галочек категории не будут показаны на сайте.</div>
+              
+              <div class="tree-categories-list" style="max-height: 500px; overflow-y: auto; border: 1px solid #ddd; padding: 15px; border-radius: 4px; background: #fafafa;">
+                <?php foreach ($categories as $category) { ?>
+                <?php $is_excluded = in_array($category['category_id'], $excluded_categories); ?>
+                <div class="checkbox tree-cat-item" style="margin: 3px 0; padding: 4px 8px; border-radius: 3px; <?php echo $is_excluded ? 'opacity: 0.5;' : ''; ?>">
+                  <label style="font-weight: normal; cursor: pointer; width: 100%;">
+                    <input type="checkbox" 
+                           class="cat-checkbox" 
+                           data-cat-id="<?php echo $category['category_id']; ?>" 
+                           <?php echo (!$is_excluded) ? 'checked' : ''; ?> />
+                    <input type="hidden" 
+                           name="excluded_categories[]" 
+                           value="<?php echo $category['category_id']; ?>" 
+                           class="cat-hidden" 
+                           data-cat-id="<?php echo $category['category_id']; ?>"
+                           <?php echo (!$is_excluded) ? 'disabled' : ''; ?> />
+                    <span class="cat-name" style="<?php echo (!$category['status']) ? 'color: #999; text-decoration: line-through;' : ''; ?>">
+                      <?php echo $category['name']; ?>
+                    </span>
+                    <?php if (!$category['status']) { ?>
+                    <span class="label label-warning" style="font-size: 10px; vertical-align: middle;">Отключена в каталоге</span>
+                    <?php } ?>
+                  </label>
+                </div>
+                <?php } ?>
+              </div>
+            </div>
+
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+// Обновить счётчик
+function updateCount() {
+  var total = $('.cat-checkbox').length;
+  var checked = $('.cat-checkbox:checked').length;
+  $('#included-count').text(checked);
+}
+
+// Выбрать все
+function selectAllCategories() {
+  $('.cat-checkbox').prop('checked', true);
+  $('.cat-hidden').prop('disabled', true);
+  $('.tree-cat-item').css('opacity', '1');
+  updateCount();
+}
+
+// Снять все
+function unselectAllCategories() {
+  $('.cat-checkbox').prop('checked', false);
+  $('.cat-hidden').prop('disabled', false);
+  $('.tree-cat-item').css('opacity', '0.5');
+  updateCount();
+}
+
+// Обработка чекбоксов
+$('.cat-checkbox').on('change', function() {
+  var $hidden = $(this).closest('.checkbox').find('.cat-hidden');
+  var $item = $(this).closest('.tree-cat-item');
+  
+  if (this.checked) {
+    // Включена — скрыть hidden (не отправлять)
+    $hidden.prop('disabled', true);
+    $item.css('opacity', '1');
+  } else {
+    // Выключена — показать hidden (отправить как исключённую)
+    $hidden.prop('disabled', false);
+    $item.css('opacity', '0.5');
+  }
+  updateCount();
+});
+
+// Инициализация счётчика
+$(document).ready(function() {
+  updateCount();
+});
+</script>
+
+<style>
+.tree-categories-list .checkbox {
+  margin-left: 0;
+  padding-left: 5px;
+}
+.tree-categories-list .checkbox:hover {
+  background-color: #f0f0f0;
+}
+.tree-categories-list .checkbox label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 0;
+}
+.tree-cat-item {
+  transition: opacity 0.2s ease;
+}
+</style>
+
+<?php echo $footer; ?>

@@ -1,0 +1,303 @@
+/**
+ * Tree Catalog Module — Стили
+ * Модуль дерева категорий для OpenCart 3
+ */
+
+/* ========================================
+   Контейнер модуля
+   ======================================== */
+.tree-catalog-module {
+    font-family: inherit;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+/* ========================================
+   Кнопки управления (развернуть/свернуть всё)
+   ======================================== */
+.tree-catalog-controls {
+    display: flex;
+    justify-content: flex-end;
+    gap: 5px;
+    margin-bottom: 8px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #eee;
+}
+
+.btn-tree-control {
+    background: none;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    cursor: pointer;
+    padding: 3px 8px;
+    font-size: 12px;
+    color: #666;
+    transition: all 0.2s ease;
+    line-height: 1;
+}
+
+.btn-tree-control:hover {
+    background-color: #f5f5f5;
+    border-color: #bbb;
+    color: #333;
+}
+
+.btn-tree-control:active {
+    background-color: #e8e8e8;
+}
+
+.btn-tree-control i {
+    font-size: 14px;
+}
+
+/* ========================================
+   Список (дерево)
+   ======================================== */
+.tree-catalog-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.tree-catalog-list .tree-catalog-list {
+    margin-left: 0;
+    padding-left: 18px;
+    border-left: 1px dashed #e0e0e0;
+    margin-left: 8px;
+}
+
+/* ========================================
+   Элемент дерева
+   ======================================== */
+.tree-catalog-item {
+    margin: 0;
+    padding: 0;
+}
+
+.tree-catalog-node {
+    display: flex;
+    align-items: center;
+    padding: 4px 6px;
+    border-radius: 4px;
+    transition: background-color 0.15s ease;
+    min-height: 30px;
+}
+
+.tree-catalog-node:hover {
+    background-color: #f8f9fa;
+}
+
+/* ========================================
+   Кнопка свёртывания/развёртывания
+   ======================================== */
+.tree-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    color: #888;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+    border-radius: 3px;
+    margin-right: 4px;
+}
+
+.tree-toggle:hover {
+    color: #333;
+    background-color: #e9ecef;
+}
+
+.tree-toggle i {
+    font-size: 12px;
+    transition: transform 0.2s ease;
+}
+
+.tree-toggle.expanded i {
+    transform: rotate(90deg);
+}
+
+.tree-toggle.collapsed i {
+    transform: rotate(0deg);
+}
+
+/* Листовой элемент (без детей) */
+.tree-toggle-leaf {
+    cursor: default;
+    color: #ccc;
+}
+
+.tree-toggle-leaf:hover {
+    background-color: transparent;
+    color: #ccc;
+}
+
+.tree-toggle-leaf i {
+    font-size: 5px;
+}
+
+/* ========================================
+   Изображение категории
+   ======================================== */
+.tree-catalog-image {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+    margin-right: 6px;
+    border-radius: 3px;
+    flex-shrink: 0;
+}
+
+/* ========================================
+   Ссылка на категорию
+   ======================================== */
+.tree-catalog-link {
+    color: #333;
+    text-decoration: none;
+    transition: color 0.15s ease;
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding: 2px 0;
+}
+
+.tree-catalog-link:hover {
+    color: #229ac8;
+    text-decoration: none;
+}
+
+/* ========================================
+   Счётчик товаров
+   ======================================== */
+.tree-catalog-count {
+    color: #999;
+    font-size: 12px;
+    margin-left: 4px;
+    flex-shrink: 0;
+}
+
+/* ========================================
+   Активная категория
+   ======================================== */
+.tree-catalog-item.active > .tree-catalog-node {
+    background-color: #e8f4fd;
+}
+
+.tree-catalog-item.active > .tree-catalog-node .tree-catalog-link {
+    color: #229ac8;
+    font-weight: 600;
+}
+
+.tree-active-link {
+    color: #229ac8 !important;
+    font-weight: 600;
+}
+
+/* Категория в пути к текущей */
+.tree-catalog-item.in-path > .tree-catalog-node {
+    background-color: #f0f8ff;
+}
+
+.tree-catalog-item.in-path > .tree-catalog-node .tree-catalog-link {
+    color: #555;
+    font-weight: 500;
+}
+
+/* ========================================
+   Состояния свёрнутости/развёрнутости
+   ======================================== */
+.tree-collapsed {
+    display: none;
+}
+
+.tree-expanded {
+    display: block;
+}
+
+/* ========================================
+   Анимация (опционально)
+   ======================================== */
+.tree-catalog-list {
+    overflow: hidden;
+}
+
+/* ========================================
+   Адаптивность
+   ======================================== */
+@media (max-width: 768px) {
+    .tree-catalog-controls {
+        justify-content: center;
+    }
+    
+    .tree-catalog-list .tree-catalog-list {
+        padding-left: 14px;
+        margin-left: 6px;
+    }
+    
+    .tree-catalog-node {
+        padding: 5px 4px;
+    }
+    
+    .tree-catalog-link {
+        font-size: 13px;
+    }
+}
+
+/* ========================================
+   Тёмная тема (если поддерживается)
+   ======================================== */
+@media (prefers-color-scheme: dark) {
+    .tree-catalog-controls {
+        border-bottom-color: #444;
+    }
+    
+    .btn-tree-control {
+        border-color: #555;
+        color: #ccc;
+    }
+    
+    .btn-tree-control:hover {
+        background-color: #333;
+        border-color: #777;
+        color: #fff;
+    }
+    
+    .tree-catalog-node:hover {
+        background-color: #2a2a2a;
+    }
+    
+    .tree-toggle {
+        color: #aaa;
+    }
+    
+    .tree-toggle:hover {
+        color: #fff;
+        background-color: #444;
+    }
+    
+    .tree-catalog-link {
+        color: #ddd;
+    }
+    
+    .tree-catalog-link:hover {
+        color: #4db8e8;
+    }
+    
+    .tree-catalog-count {
+        color: #777;
+    }
+    
+    .tree-catalog-item.active > .tree-catalog-node {
+        background-color: #1a3a4a;
+    }
+    
+    .tree-catalog-item.active > .tree-catalog-node .tree-catalog-link {
+        color: #4db8e8;
+    }
+    
+    .tree-catalog-list .tree-catalog-list {
+        border-left-color: #444;
+    }
+}

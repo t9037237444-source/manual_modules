@@ -1,0 +1,207 @@
+{# Дерево категорий — Tree Catalog Module для OpenCart 3 #}
+<div class="tree-catalog-module" id="tree-catalog-{{ module_id }}" 
+     data-default-state="{{ default_state }}" 
+     data-animation="{{ animation }}"
+     data-highlight-active="{{ highlight_active }}"
+     data-current-category="{{ current_category_id }}">
+
+  {# Кнопки управления #}
+  <div class="tree-catalog-controls">
+    <button type="button" class="btn-tree-control btn-expand-all" title="Развернуть все">
+      <i class="fa fa-plus-square-o"></i>
+    </button>
+    <button type="button" class="btn-tree-control btn-collapse-all" title="Свернуть все">
+      <i class="fa fa-minus-square-o"></i>
+    </button>
+  </div>
+
+  {# Дерево #}
+  <ul class="tree-catalog-list tree-level-0">
+    {% for category in categories %}
+    {% set cat_id = category.category_id %}
+    {% set is_active = (cat_id == current_category_id) %}
+    {% set is_in_path = current_category_id and cat_id in current_path %}
+    {% set should_expand = (default_state == 'expanded') or is_in_path %}
+    
+    <li class="tree-catalog-item {{ is_active ? 'active' : '' }} {{ is_in_path ? 'in-path' : '' }} {{ category.has_children ? 'has-children' : '' }}" 
+        data-category-id="{{ cat_id }}" data-level="0">
+      
+      <div class="tree-catalog-node">
+        {% if category.has_children %}
+        <span class="tree-toggle {{ should_expand ? 'expanded' : 'collapsed' }}">
+          <i class="fa fa-caret-right"></i>
+        </span>
+        {% else %}
+        <span class="tree-toggle tree-toggle-leaf">
+          <i class="fa fa-circle"></i>
+        </span>
+        {% endif %}
+
+        {% if show_images and category.image %}
+        <img src="{{ category.image }}" alt="{{ category.name }}" class="tree-catalog-image" />
+        {% endif %}
+
+        <a href="{{ category.href }}" class="tree-catalog-link {{ is_active ? 'tree-active-link' : '' }}" title="{{ category.name }}">
+          {{ category.name }}
+        </a>
+
+        {% if show_count and category.product_count > 0 %}
+        <span class="tree-catalog-count">({{ category.product_count }})</span>
+        {% endif %}
+      </div>
+
+      {% if category.has_children and category.children %}
+      <ul class="tree-catalog-list tree-level-1 {{ should_expand ? 'tree-expanded' : 'tree-collapsed' }}">
+        {% for child in category.children %}
+        {% set child_id = child.category_id %}
+        {% set child_active = (child_id == current_category_id) %}
+        {% set child_in_path = current_category_id and child_id in current_path %}
+        {% set child_expand = (default_state == 'expanded') or child_in_path %}
+        
+        <li class="tree-catalog-item {{ child_active ? 'active' : '' }} {{ child_in_path ? 'in-path' : '' }} {{ child.has_children ? 'has-children' : '' }}" 
+            data-category-id="{{ child_id }}" data-level="1">
+          
+          <div class="tree-catalog-node">
+            {% if child.has_children %}
+            <span class="tree-toggle {{ child_expand ? 'expanded' : 'collapsed' }}">
+              <i class="fa fa-caret-right"></i>
+            </span>
+            {% else %}
+            <span class="tree-toggle tree-toggle-leaf">
+              <i class="fa fa-circle"></i>
+            </span>
+            {% endif %}
+
+            {% if show_images and child.image %}
+            <img src="{{ child.image }}" alt="{{ child.name }}" class="tree-catalog-image" />
+            {% endif %}
+
+            <a href="{{ child.href }}" class="tree-catalog-link {{ child_active ? 'tree-active-link' : '' }}" title="{{ child.name }}">
+              {{ child.name }}
+            </a>
+
+            {% if show_count and child.product_count > 0 %}
+            <span class="tree-catalog-count">({{ child.product_count }})</span>
+            {% endif %}
+          </div>
+
+          {% if child.has_children and child.children %}
+          <ul class="tree-catalog-list tree-level-2 {{ child_expand ? 'tree-expanded' : 'tree-collapsed' }}">
+            {% for grandchild in child.children %}
+            {% set gc_id = grandchild.category_id %}
+            {% set gc_active = (gc_id == current_category_id) %}
+            {% set gc_in_path = current_category_id and gc_id in current_path %}
+            {% set gc_expand = (default_state == 'expanded') or gc_in_path %}
+            
+            <li class="tree-catalog-item {{ gc_active ? 'active' : '' }} {{ gc_in_path ? 'in-path' : '' }} {{ grandchild.has_children ? 'has-children' : '' }}" 
+                data-category-id="{{ gc_id }}" data-level="2">
+              
+              <div class="tree-catalog-node">
+                {% if grandchild.has_children %}
+                <span class="tree-toggle {{ gc_expand ? 'expanded' : 'collapsed' }}">
+                  <i class="fa fa-caret-right"></i>
+                </span>
+                {% else %}
+                <span class="tree-toggle tree-toggle-leaf">
+                  <i class="fa fa-circle"></i>
+                </span>
+                {% endif %}
+
+                {% if show_images and grandchild.image %}
+                <img src="{{ grandchild.image }}" alt="{{ grandchild.name }}" class="tree-catalog-image" />
+                {% endif %}
+
+                <a href="{{ grandchild.href }}" class="tree-catalog-link {{ gc_active ? 'tree-active-link' : '' }}" title="{{ grandchild.name }}">
+                  {{ grandchild.name }}
+                </a>
+
+                {% if show_count and grandchild.product_count > 0 %}
+                <span class="tree-catalog-count">({{ grandchild.product_count }})</span>
+                {% endif %}
+              </div>
+
+              {% if grandchild.has_children and grandchild.children %}
+              <ul class="tree-catalog-list tree-level-3 {{ gc_expand ? 'tree-expanded' : 'tree-collapsed' }}">
+                {% for ggchild in grandchild.children %}
+                {% set ggc_id = ggchild.category_id %}
+                {% set ggc_active = (ggc_id == current_category_id) %}
+                {% set ggc_in_path = current_category_id and ggc_id in current_path %}
+                {% set ggc_expand = (default_state == 'expanded') or ggc_in_path %}
+                
+                <li class="tree-catalog-item {{ ggc_active ? 'active' : '' }} {{ ggc_in_path ? 'in-path' : '' }} {{ ggchild.has_children ? 'has-children' : '' }}" 
+                    data-category-id="{{ ggc_id }}" data-level="3">
+                  
+                  <div class="tree-catalog-node">
+                    {% if ggchild.has_children %}
+                    <span class="tree-toggle {{ ggc_expand ? 'expanded' : 'collapsed' }}">
+                      <i class="fa fa-caret-right"></i>
+                    </span>
+                    {% else %}
+                    <span class="tree-toggle tree-toggle-leaf">
+                      <i class="fa fa-circle"></i>
+                    </span>
+                    {% endif %}
+
+                    {% if show_images and ggchild.image %}
+                    <img src="{{ ggchild.image }}" alt="{{ ggchild.name }}" class="tree-catalog-image" />
+                    {% endif %}
+
+                    <a href="{{ ggchild.href }}" class="tree-catalog-link {{ ggc_active ? 'tree-active-link' : '' }}" title="{{ ggchild.name }}">
+                      {{ ggchild.name }}
+                    </a>
+
+                    {% if show_count and ggchild.product_count > 0 %}
+                    <span class="tree-catalog-count">({{ ggchild.product_count }})</span>
+                    {% endif %}
+                  </div>
+
+                  {% if ggchild.has_children and ggchild.children %}
+                  <ul class="tree-catalog-list tree-level-4 {{ ggc_expand ? 'tree-expanded' : 'tree-collapsed' }}">
+                    {% for g5 in ggchild.children %}
+                    {% set g5_id = g5.category_id %}
+                    {% set g5_active = (g5_id == current_category_id) %}
+                    {% set g5_in_path = current_category_id and g5_id in current_path %}
+                    {% set g5_expand = (default_state == 'expanded') or g5_in_path %}
+                    
+                    <li class="tree-catalog-item {{ g5_active ? 'active' : '' }} {{ g5_in_path ? 'in-path' : '' }}" 
+                        data-category-id="{{ g5_id }}" data-level="4">
+                      <div class="tree-catalog-node">
+                        <span class="tree-toggle tree-toggle-leaf">
+                          <i class="fa fa-circle"></i>
+                        </span>
+                        {% if show_images and g5.image %}
+                        <img src="{{ g5.image }}" alt="{{ g5.name }}" class="tree-catalog-image" />
+                        {% endif %}
+                        <a href="{{ g5.href }}" class="tree-catalog-link {{ g5_active ? 'tree-active-link' : '' }}" title="{{ g5.name }}">{{ g5.name }}</a>
+                        {% if show_count and g5.product_count > 0 %}
+                        <span class="tree-catalog-count">({{ g5.product_count }})</span>
+                        {% endif %}
+                      </div>
+                    </li>
+                    {% endfor %}
+                  </ul>
+                  {% endif %}
+                </li>
+                {% endfor %}
+              </ul>
+              {% endif %}
+            </li>
+            {% endfor %}
+          </ul>
+          {% endif %}
+        </li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+    </li>
+    {% endfor %}
+  </ul>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function() {
+  if (typeof TreeCatalog !== 'undefined') {
+    TreeCatalog.init('#tree-catalog-{{ module_id }}');
+  }
+});
+</script>
