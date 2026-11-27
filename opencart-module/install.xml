@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modification>
+    <name>Tree Catalog — Дерево категорий</name>
+    <code>tree_catalog</code>
+    <version>1.0.0</version>
+    <author>ИнжСпецСервис</author>
+    <link>https://isservice.pro</link>
+    <description>Модуль вывода категорий в виде интерактивного дерева с возможностью свёртывания/развёртывания, включения/отключения категорий и сохранения состояния.</description>
+    
+    <!-- Модификация контроллера колонок для регистрации модуля -->
+    <file path="catalog/controller/common/column_left.php">
+        <operation>
+            <search><![CDATA[$data['categories'] = array();]]></search>
+            <add position="before"><![CDATA[
+            // Tree Catalog Module
+            $data['tree_catalog_modules'] = array();
+            $this->load->model('setting/module');
+            $modules = $this->model_setting_module->getModulesByCode('tree_catalog');
+            foreach ($modules as $module) {
+                $setting_info = $this->model_setting_module->getModule($module['module_id']);
+                if ($setting_info && $setting_info['status']) {
+                    $data['tree_catalog_modules'][] = $setting_info;
+                }
+            }
+            ]]></add>
+        </operation>
+    </file>
+
+    <!-- Модификация шаблона column_left для вывода дерева -->
+    <file path="catalog/view/theme/*/template/common/column_left.twig">
+        <operation>
+            <search><![CDATA[{% for category in categories %}]]></search>
+            <add position="before"><![CDATA[
+            {% if tree_catalog_modules is defined %}
+            {% for tree_module in tree_catalog_modules %}
+            {{ tree_module }}
+            {% endfor %}
+            {% endif %}
+            ]]></add>
+        </operation>
+    </file>
+</modification>
